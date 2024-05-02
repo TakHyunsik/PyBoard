@@ -1,3 +1,4 @@
+# Domain.Posts.Post.py
 import __init__
 from dataclasses import dataclass
 from abc import ABCMeta, abstractmethod
@@ -91,7 +92,7 @@ class PostBuilder(IDBuilder):
         assert isinstance(self.create_time, datetime) , "create_time not set. plz datetime."
 
         return Post(
-            id = PostID( uuid=self.uuid, seq=self.seq),
+            id = PostID(uuid=self.uuid, seq=self.seq),
             title= self.title,
             content= self.content,
             create_time= self.create_time,
