@@ -1,0 +1,32 @@
+<!-- templates/post_detail.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Detail</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .post-content {
+            border: 1px solid #20c997;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .post-time {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ post.title }}</h1>
+        <div class="post-content">
+            <p>{{ post.content }}</p>
+        </div>
+        <p class="post-time">{{ post.create_time.strftime('%Y-%m-%d %H:%M') }}</p>
+    </div>
+</body>
+</html>
+
+

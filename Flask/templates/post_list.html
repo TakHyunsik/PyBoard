@@ -1,0 +1,38 @@
+<!-- templates/post_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Posts</h1>
+        <ul class="list-group">
+            {% for post in posts %}
+            <li class="list-group-item"><a href="{{ url_for('get_post', post_id=post.get_id()) }}">{{ post.title }}</a></li>
+            {% endfor %}
+        </ul>
+        <nav aria-label="Page navigation" class="d-flex justify-content-center">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="{{ url_for('get_posts', page=1) }}">First</a></li>
+                {% if page > 1 %}
+                    <li class="page-item"><a class="page-link" href="{{ url_for('get_posts', page=page-1) }}">🔙</a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link">🚫</a></li>
+                {% endif %}
+                <li class="page-item active"><a class="page-link" href="#">{{ page }}</a></li>
+                {% if page < total_pages %}
+                    <li class="page-item"><a class="page-link" href="{{ url_for('get_posts', page=page+1) }}">🔜</a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link">🚫</a></li>
+                {% endif %}
+                <li class="page-item"><a class="page-link" href="{{ url_for('get_posts', page=total_pages) }}">Last</a></li>
+            </ul>
+        </nav>
+        <a href="{{ url_for('create_post_form') }}" class="btn btn-primary">Create Post</a>
+    </div>
+</body>
+</html>
