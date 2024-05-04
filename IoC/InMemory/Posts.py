@@ -1,17 +1,19 @@
 # IoC.InMemory.Posts.py
 import __init__
 from typing import Optional, List, Tuple, Dict
-from result import Result, Ok
+from result import Result, Ok, Err
 
 from Domains.Posts.Repository import *
 from Domains.Posts import Post, PostID, PostIDBuilder, PostBuilder
 
 from icecream import ic
 
+post_memory: Dict[str, Post] = {}
+
+
 class InMemorySelectPostStorage(ISelectablePost):
-    def __init__(self, memory: Dict[str, Post]):
-        self.posts = memory
-        print(" InMemorySelectPostStorage", self.posts.id())
+    def __init__(self):
+        self.posts = post_memory
 
     def get_post_by_post_id(self, post_id: PostID) -> Optional[Post]:
         """주어진 게시물 ID에 해당하는 게시물을 반환합니다.
@@ -44,14 +46,19 @@ class InMemorySelectPostStorage(ISelectablePost):
         """
         posts_list = list(self.posts.values())
         total_count = len(posts_list)
-        start_index = page * size
-        end_index = start_index + size
-        return Ok((total_count, posts_list[start_index:end_index]))
+        # start_index와 end_index를 계산하여 리스트의 일부를 가져옵니다.
+        start_index = max(total_count - (page + 1) * size, 0)
+        end_index = max(total_count - page * size, 0)
+        posts_on_page = posts_list[start_index:end_index][::-1]  # 역순으로 반환
+        try:
+            return Ok((total_count, posts_on_page))
+        except:
+            return Err("out of range")
 
 
 class InMemoryInsertPostStorage(IInsertablePost):
-    def __init__(self, memory: Dict[str, Post]):
-        self.posts = memory
+    def __init__(self):
+        self.posts = post_memory
 
     def insert_post(self, post: Post) -> Result[PostID, str]:
         new_post = PostBuilder(
@@ -61,14 +68,12 @@ class InMemoryInsertPostStorage(IInsertablePost):
             content=post.content,
             create_time=post.create_time,
         ).build()
-        print("post.py")
-        print(post.get_id())
-        print(new_post)
         self.posts[post.get_id()] = new_post
         return Ok(new_post.id)
 
 
 __all__ = [
+    "post_memory",
     "InMemoryInsertPostStorage",
     "InMemorySelectPostStorage",
 ]

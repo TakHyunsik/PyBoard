@@ -22,7 +22,7 @@ class ISelectablePost(ABC):
         ...
 
     @abstractmethod
-    def get_posts_by_reverse_seqence(
+    def get_posts_by_reverse_sequence(
         self,
         page=0,
         size=10,
