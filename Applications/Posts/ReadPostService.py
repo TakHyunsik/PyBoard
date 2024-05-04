@@ -38,7 +38,7 @@ class ReadPostService:
         page=0,
         size=10,
     ) -> Result[Tuple[int, List[Post]], str]:
-        return self.get_post_repo.get_posts_by_reverse_seqence(
+        return self.get_post_repo.get_posts_by_reverse_sequence(
             page=page,
             size=size,
         )

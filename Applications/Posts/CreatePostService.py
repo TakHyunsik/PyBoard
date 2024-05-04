@@ -7,17 +7,18 @@ from result import Result
 from Domains.Posts import Post, PostID, PostBuilder
 from Domains.Posts.Repository import IInsertablePost
 
+
 class CreatePostService:
     def __init__(
-        self, 
-        insert_post_repo:IInsertablePost,
+        self,
+        insert_post_repo: IInsertablePost,
     ):
         assert issubclass(
             type(insert_post_repo), IInsertablePost
         ), "insert_post_repo must be a class that inherits from IInsertablePost."
-        
+
         self.insert_post_repo = insert_post_repo
-        
+
     def create(
         self,
         title: str,
@@ -36,7 +37,7 @@ class CreatePostService:
             Result[PostID, str]: 게시물 생성에 성공하면 Ok를 반환하고, 새로운 게시물의 ID를 포함합니다.
                                 실패하면 Err를 반환하고, 실패 이유를 문자열로 반환합니다.
         """
-        return self.insert_post_repo.insert_post(
+        post = (
             PostBuilder()
             .set_uuid()
             .set_title(title)
@@ -44,3 +45,5 @@ class CreatePostService:
             .set_content(content)
             .build()
         )
+        print("create", post)
+        return self.insert_post_repo.insert_post(post)
